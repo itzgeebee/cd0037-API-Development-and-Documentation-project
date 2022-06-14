@@ -156,7 +156,6 @@ def create_app(test_config=None):
         data = request.get_json()
         previous_question = data.get("previous_questions")
         quiz_category = data.get("quiz_category")
-        print(previous_question, quiz_category)
 
         if quiz_category["id"] == 0:
             all_questions = Question.query.all()

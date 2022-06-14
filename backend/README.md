@@ -6,7 +6,7 @@
 
 1. **Python 3.7** - Follow instructions to install the latest version of python for your platform in the [python docs](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python)
 
-2. **Virtual Environment** - We recommend working within a virtual environment whenever using Python for projects. This keeps your dependencies for each project separate and organized. Instructions for setting up a virual environment for your platform can be found in the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
+2. **Virtual Environment** - We recommend working within a virtual environment whenever using Python for projects. This keeps your dependencies for each project separate and organized. Instructions for setting up a virtual environment for your platform can be found in the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
 
 3. **PIP Dependencies** - Once your virtual environment is setup and running, install the required dependencies by navigating to the `/backend` directory and running:
 
@@ -27,7 +27,7 @@ pip install -r requirements.txt
 With Postgres running, create a `trivia` database:
 
 ```bash
-createbd trivia
+createdb trivia
 ```
 
 Populate the database using the `trivia.psql` file provided. From the `backend` folder in terminal run:
@@ -48,32 +48,12 @@ flask run --reload
 
 The `--reload` flag will detect file changes and restart the server automatically.
 
-## To Do Tasks
+## API Documentation
+The API is based on the REST architecture
 
-These are the files you'd want to edit in the backend:
+### Endpoints
 
-1. `backend/flaskr/__init__.py`
-2. `backend/test_flaskr.py`
-
-One note before you delve into your tasks: for each endpoint, you are expected to define the endpoint and response data. The frontend will be a plentiful resource because it is set up to expect certain endpoints and response data formats already. You should feel free to specify endpoints in your own way; if you do so, make sure to update the frontend or you will get some unexpected behavior.
-
-1. Use Flask-CORS to enable cross-domain requests and set response headers.
-2. Create an endpoint to handle `GET` requests for questions, including pagination (every 10 questions). This endpoint should return a list of questions, number of total questions, current category, categories.
-3. Create an endpoint to handle `GET` requests for all available categories.
-4. Create an endpoint to `DELETE` a question using a question `ID`.
-5. Create an endpoint to `POST` a new question, which will require the question and answer text, category, and difficulty score.
-6. Create a `POST` endpoint to get questions based on category.
-7. Create a `POST` endpoint to get questions based on a search term. It should return any questions for whom the search term is a substring of the question.
-8. Create a `POST` endpoint to get questions to play the quiz. This endpoint should take a category and previous question parameters and return a random questions within the given category, if provided, and that is not one of the previous questions.
-9. Create error handlers for all expected errors including 400, 404, 422, and 500.
-
-## Documenting your Endpoints
-
-You will need to provide detailed documentation of your API endpoints including the URL, request parameters, and the response body. Use the example below as a reference.
-
-### Documentation Example
-
-`GET '/api/v1.0/categories'`
+`GET '/categories'`
 
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
@@ -89,11 +69,199 @@ You will need to provide detailed documentation of your API endpoints including 
   "6": "Sports"
 }
 ```
+-Error example:
+```json
+{
+  "success": false, 
+  "error": 404,
+  "message": "resource not found"
+}
+```
+---
+`GET '/questions'`
+- Fetches a paginated set of questions, total number of questions, all categories and current category string
+- Request Arguments: 'page' - integer
+- Returns an object with 10 paginated questions, total questions, all categories and current category
 
+```json
+{
+  "questions": [
+    {
+      "id": 1,
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?",
+      "answer": "Maya Angelou",
+      "difficulty": 2,
+      "category": 5
+    }
+  ],
+  "total_questions": 20,
+  "categories": {
+    "1": "Science",
+    "2": "Art",
+    "3": "Geography",
+    "4": "History",
+    "5": "Entertainment",
+    "6": "Sports"
+  },
+  "current_category": "Science"
+}
+```
+-Error example:
+```json
+{
+  "success": false, 
+  "error": 404,
+  "message": "resource not found"
+}
+```
+---
+`GET '/categories/id/questions'`
+
+- Fetch questions for a category specified by id request argument
+- Request Arguments: `id` - integer
+- Returns: An object with questions for the specified category, total questions, and current category string
+
+```json
+{
+  "questions": [
+    {
+      "id": 1,
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?",
+      "answer": "Maya Angelou",
+      "difficulty": 2,
+      "category": 5
+    }
+  ],
+  "total_questions": 20,
+  "current_category": "Entertainment"
+}
+```
+-Error example:
+```json
+{
+  "success": false, 
+  "error": 404,
+  "message": "resource not found"
+}
+```
+---
+`POST '/questions'`
+
+- Sends a post request to add a new question to the database
+- Request Body:
+
+```json
+{
+  "question": "Who let the dogs out?",
+  "answer": "who who who who",
+  "difficulty": 5,
+  "category": 5
+}
+```
+- Returns: Does not return any new data
+-Error example:
+```json
+{
+  "success": false, 
+  "error": 422,
+  "message": "unprocessable"
+}
+```
+---
+`POST '/question'`
+
+- Sends a post request in order to search for a specific question by search term
+- Request Body:
+
+```json
+{
+  "searchTerm": "Who let the"
+}
+```
+
+- Returns: any array of questions, a number of totalQuestions that match the search term and the current category string
+
+```json
+{
+  "questions": [
+    {
+      "id": 21,
+      "question": "Who let the dogs out?",
+      "answer": "who who who who",
+      "difficulty": 5,
+      "category": 5
+    }
+  ],
+  "total_questions": 10,
+  "current_category": "Entertainment"
+}
+```
+-Error example:
+```json
+{
+  "success": false, 
+  "error": 422,
+  "message": "unprocessable"
+}
+```
+---
+`POST '/quizzes'`
+
+- Sends a post request in order to get the next question
+- Request Body:
+
+```json
+{
+    "previous_questions": [4, 2, 9],
+    "quiz_category": {
+        "id": 1,
+        "type": "science"
+    }
+ }
+```
+- Returns: a single new question object
+
+```json
+{
+  "question": {
+    "id": 1,
+    "question": "This is a question",
+    "answer": "This is an answer",
+    "difficulty": 5,
+    "category": 4
+  }
+}
+```
+
+-Error example:
+```json
+{
+  "success": false, 
+  "error": 404,
+  "message": "resource not found"
+}
+```
+---
+`DELETE '/questions/id'`
+
+- Deletes a question using the specified id
+- Request Arguments: `id` - integer
+- Returns: Does not need to return any data.
+
+
+-Error example:
+```json
+{
+  "success": false, 
+  "error": 404,
+  "message": "resource not found"
+}
+```
+---
 ## Testing
 
-Write at least one test for the success and at least one error behavior of each endpoint using the unittest library.
-
+The testing uses the unittest testing framework
+Each endpoint is tested for a success and an error response
 To deploy the tests, run
 
 ```bash

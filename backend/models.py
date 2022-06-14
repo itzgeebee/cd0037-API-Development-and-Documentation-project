@@ -1,11 +1,15 @@
 import os
+from dotenv import load_dotenv
 from sqlalchemy import Column, String, Integer, create_engine
 from flask_sqlalchemy import SQLAlchemy
-import json
 
+load_dotenv()
+DB_USER = os.environ.get("DB_USER")
+DB_PASSWORD = os.environ.get("DB_PASSWORD")
 database_name = 'trivia'
-database_path = 'postgres://{}/{}'.format('localhost:5432', database_name)
-
+database_path = "postgresql://{}:{}@{}/{}".format(
+    DB_USER, DB_PASSWORD, "localhost:5433", database_name
+)
 db = SQLAlchemy()
 
 """
@@ -27,10 +31,10 @@ class Question(db.Model):
     __tablename__ = 'questions'
 
     id = Column(Integer, primary_key=True)
-    question = Column(String)
-    answer = Column(String)
-    category = Column(String)
-    difficulty = Column(Integer)
+    question = Column(String, nullable=False)
+    answer = Column(String, nullable=False)
+    category = Column(String, nullable=False)
+    difficulty = Column(Integer, nullable=False)
 
     def __init__(self, question, answer, category, difficulty):
         self.question = question

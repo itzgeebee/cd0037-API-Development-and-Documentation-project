@@ -4,15 +4,15 @@
 
 Udacity is invested in creating bonding experiences for its employees and students. A bunch of team members got the idea to hold trivia on a regular basis and created a webpage to manage the trivia app and play the game, but their API experience is limited and still needs to be built out.
 
-That's where you come in! Help them finish the trivia app so they can start holding trivia and seeing who's the most knowledgeable of the bunch. The application must:
+I finished the trivia app so they can start holding trivia and seeing who's the most knowledgeable of the bunch. I implemented the following:
 
-1. Display questions - both all questions and by category. Questions should show the question, category and difficulty rating by default and can show/hide the answer.
-2. Delete questions.
-3. Add questions and require that they include question and answer text.
-4. Search for questions based on a text query string.
+1. Display questions - both all questions and by category. Questions show the question, category and difficulty rating by default and can show/hide the answer.
+2. Delete questions. - questions can be deleted by clicking on the trash icon
+3. Adding questions and require that they include question and answer text.
+4. Searching for questions based on a text query string.
 5. Play the quiz game, randomizing either all questions or within a specific category.
 
-Completing this trivia app will give you the ability to structure plan, implement, and test an API - skills essential for enabling your future applications to communicate with others.
+
 
 ## Starting and Submitting the Project
 
@@ -20,11 +20,11 @@ Completing this trivia app will give you the ability to structure plan, implemen
 
 ## About the Stack
 
-We started the full stack application for you. It is designed with some key functional areas:
+The application is fullstack with the frontend partially implemented by the Udacity team. I completed the implementation and made sure it was functional as specified:
 
 ### Backend
 
-The [backend](./backend/README.md) directory contains a partially completed Flask and SQLAlchemy server. You will work primarily in `__init__.py` to define your endpoints and can reference models.py for DB and SQLAlchemy setup. These are the files you'd want to edit in the backend:
+The [backend](./backend/README.md) directory contains a completed Flask and SQLAlchemy server. I worked primarily in `__init__.py` to define my endpoints and can reference models.py for DB and SQLAlchemy setup. These are the files I edited in the backend:
 
 1. `backend/flaskr/__init__.py`
 2. `backend/test_flaskr.py`
